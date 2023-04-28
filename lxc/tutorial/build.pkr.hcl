@@ -15,23 +15,50 @@
 # build blocks. A build block runs provisioner and post-processors on a
 # source. Read the documentation for source blocks here:
 # https://www.packer.io/docs/templates/hcl_templates/blocks/source
-
-source "lxc" "lxc-trusty" {
-  config_file               = "/home/jpancoast/image-builder/lxc/tutorial/ubuntu.lxc.conf"
-  template_environment_vars = ["SUITE=trusty"]
-  template_name             = "ubuntu"
+packer {
+  required_plugins {
+    lxc = {
+      version = ">= 1.0.0"
+      source  = "github.com/hashicorp/lxc"
+    }
+  }
 }
 
-source "lxc" "lxc-xenial" {
-  config_file               = "/home/jpancoast/image-builder/lxc/tutorial/ubuntu.lxc.conf"
-  template_environment_vars = ["SUITE=xenial"]
-  template_name             = "ubuntu"
+#source "lxc" "lxc-trusty" {
+#  config_file               = "/home/jpancoast/image-builder/lxc/tutorial/ubuntu.lxc.conf"
+#  template_environment_vars = ["SUITE=trusty"]
+#  template_name             = "lxc-download"
+#}
+#
+#source "lxc" "lxc-xenial" {
+#  config_file               = "/home/jpancoast/image-builder/lxc/tutorial/ubuntu.lxc.conf"
+#  template_environment_vars = ["SUITE=xenial"]
+#  template_name             = "ubuntu"
+#}
+
+source "lxc" "ubuntu-xenial-amd64" {
+  config_file = "/etc/lxc/default.conf"
+  template_name = "download"
+  template_parameters = [
+          "-d", "ubuntu",
+          "-r", "xenial",
+          "-a", "amd64"
+  ]
 }
 
+#
+#      "type": "lxc",
+#      "config_file": "/etc/lxc/default.conf",
+#      "template_name": "download",
+#      "template_parameters": [
+#          "-d", "ubuntu",
+#          "-r","18.04",
+#          "-a", "amd64"
+#
 # a build block invokes sources and runs provisioning steps on them. The
 # documentation for build blocks can be found here:
 # https://www.packer.io/docs/templates/hcl_templates/blocks/build
 build {
 #  sources = ["source.lxc.lxc-trusty", "source.lxc.lxc-xenial"]
-  sources = ["source.lxc.lxc-trusty"]
+  sources = ["source.lxc.ubuntu-xenial-amd64"]
 }
