@@ -32,5 +32,6 @@ source "lxc" "lxc-xenial" {
 # documentation for build blocks can be found here:
 # https://www.packer.io/docs/templates/hcl_templates/blocks/build
 build {
-  sources = ["source.lxc.lxc-trusty", "source.lxc.lxc-xenial"]
+#  sources = ["source.lxc.lxc-trusty", "source.lxc.lxc-xenial"]
+  sources = ["source.lxc.lxc-trusty"]
 }
