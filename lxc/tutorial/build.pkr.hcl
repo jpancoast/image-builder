@@ -39,6 +39,9 @@ packer {
 source "lxc" "ubuntu-xenial-amd64" {
   config_file = "/etc/lxc/default.conf"
   template_name = "download"
+  output_directory = "/home/jpancoast/image_builder_output/ubuntu-xenial-amd64"
+  container_name = "ubuntu-xenial-amd64"
+  
   template_parameters = [
           "-d", "ubuntu",
           "-r", "xenial",
