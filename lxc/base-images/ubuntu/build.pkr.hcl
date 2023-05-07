@@ -28,28 +28,15 @@ locals {
   current_date_time = formatdate("YYYY-MM-DD:hh-mm-ss", timestamp())
 }
 
-source "lxc" "ubuntu-xenial-amd64" {
+source "lxc" "ubuntu-base-xenial-amd64" {
   config_file = "/home/jpancoast/Stuff/code/image-builder/lxc/tutorial/ubuntu.lxc.conf"
   template_name = "download"
-  output_directory = "/home/jpancoast/Stuff/image-builder-output/lxc/ubuntu-xenial-amd64-${local.current_date_time}"
-  container_name = "ubuntu-xenial-amd64"
+  output_directory = "/home/jpancoast/Stuff/image-builder-output/lxc/ubuntu-base-xenial-amd64-${local.current_date_time}"
+  container_name = "ubuntu-base-xenial-amd64"
   
   template_parameters = [
           "-d", "ubuntu",
           "-r", "xenial",
-          "-a", "amd64"
-  ]
-}
-
-source "lxc" "alpine-314-amd64" {
-  config_file = "/home/jpancoast/Stuff/code/image-builder/lxc/tutorial/alpine.lxc.conf"
-  template_name = "download"
-  output_directory = "/home/jpancoast/Stuff/image-builder-output/lxc/alpine-314-amd64-${local.current_date_time}"
-  container_name = "alpine-314-amd64"
-  
-  template_parameters = [
-          "-d", "alpine",
-          "-r", "3.14",
           "-a", "amd64"
   ]
 }
@@ -59,7 +46,7 @@ source "lxc" "alpine-314-amd64" {
 # documentation for build blocks can be found here:
 # https://www.packer.io/docs/templates/hcl_templates/blocks/build
 build {
-  sources = ["source.lxc.alpine-314-amd64", "source.lxc.ubuntu-xenial-amd64"]
+  sources = ["source.lxc.ubuntu-base-xenial-amd64"]
     provisioner "shell" {
       inline = ["touch /blahblah"]
     }
