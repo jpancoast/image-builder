@@ -15,47 +15,34 @@
 # build blocks. A build block runs provisioner and post-processors on a
 # source. Read the documentation for source blocks here:
 # https://www.packer.io/docs/templates/hcl_templates/blocks/source
-packer {
-  required_plugins {
-    lxc = {
-      version = ">= 1.0.0"
-      source  = "github.com/hashicorp/lxc"
-    }
-  }
+source "lxc" "lxc-centos-7-x64" {
+  config_file         = "/etc/lxc/default.conf"
+  template_name       = "download"
+  template_parameters = ["-r", "3.17", "-a", "amd64", "-d", "alpine"]
 }
 
-locals {
-  current_date_time = formatdate("YYYY-MM-DD:hh-mm-ss", timestamp())
+source "lxc" "lxc-jessie" {
+  config_file               = "/etc/lxc/default.conf"
+  template_environment_vars = ["SUITE=jessie"]
+  template_name             = "debian"
 }
-
-source "lxc" "ubuntu-base-xenial-amd64" {
-  name             = "ubuntu-base-xenial-amd64"
-  config_file      = "/home/jpancoast/Stuff/code/image-builder/lxc/tutorial/ubuntu.lxc.conf"
-  template_name    = "download"
-  output_directory = "/home/jpancoast/Stuff/image-builder-output/lxc/ubuntu-base-xenial-amd64-${local.current_date_time}"
-  container_name   = "ubuntu-base-xenial-amd64"
-
-  template_parameters = [
-    "-d", "ubuntu",
-    "-r", "xenial",
-    "-a", "amd64"
-  ]
-}
-
 #
+#source "lxc" "lxc-trusty" {
+#  config_file               = "/etc/lxc/default.conf"
+#  template_environment_vars = ["SUITE=trusty"]
+#  template_name             = "ubuntu"
+#}
+#
+#source "lxc" "lxc-xenial" {
+#  config_file               = "/etc/lxc/default.conf"
+#  template_environment_vars = ["SUITE=xenial"]
+#  template_name             = "ubuntu"
+#}
+
 # a build block invokes sources and runs provisioning steps on them. The
 # documentation for build blocks can be found here:
 # https://www.packer.io/docs/templates/hcl_templates/blocks/build
 build {
-  sources = ["source.lxc.ubuntu-base-xenial-amd64"]
-  provisioner "shell" {
-    inline = ["touch /blahblah"]
-  }
+  sources = ["source.lxc.lxc-centos-7-x64", "source.lxc.lxc-jessie"]
 
-  provisioner "shell-local" {
-    environment_vars = ["TESTVAR=${build.PackerRunUUID}"]
-    inline = ["echo source.name is ${source.name}.",
-      "echo build.name is ${build.name}.",
-    "echo build.PackerRunUUID is $TESTVAR"]
-  }
 }
