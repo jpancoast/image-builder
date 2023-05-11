@@ -1,3 +1,3 @@
 #!/bin/sh
 
-sudo packer build .
+time -v sudo packer build .
