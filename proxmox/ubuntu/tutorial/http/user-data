@@ -1,0 +1,24 @@
+#cloud-config
+autoinstall:
+  version: 1
+  locale: en_US.UTF-8
+  keyboard:
+    layout: en
+    variant: us
+  identity:
+    hostname: packer-ubuntu-20
+    password: "$6$exDY1mhS4KUYCE/2$zmn9ToZwTKLhCw.b4/b.ZRTIZM30JZ4QrOQ2aOXJ8yk96xpcCof0kxKwuX1kqLG/ygbJ1f8wxED22bTL4F46P0" #ubuntu
+    username: ubuntu
+    realname: ubuntu
+  refresh-installer:
+    update: false
+  ssh:
+    install-server: yes
+    allow-pw: yes
+  packages:
+    - qemu-guest-agent
+  storage:
+    layout:
+      name: direct
+    swap:
+      size: 0

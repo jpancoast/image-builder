@@ -16,6 +16,8 @@ source "proxmox" "ubuntu" {
   }
   os = "l26"
 
+  qemu_agent = false
+
   boot_command = ["${var.boot_command_prefix}", "/install/vmlinuz ", "auto ", "console-setup/ask_detect=false ", "debconf/frontend=noninteractive ", "debian-installer=${var.locale} ", "hostname=${var.hostname} ", "fb=false ", "grub-installer/bootdev=/dev/sda<wait> ", "initrd=/install/initrd.gz ", "kbd-chooser/method=us ", "keyboard-configuration/modelcode=SKIP ", "locale=${var.locale} ", "noapic ", "passwd/username=${var.ssh_username} ", "passwd/user-fullname=${var.ssh_fullname} ", "passwd/user-password=${var.ssh_password} ", "passwd/user-password-again=${var.ssh_password} ", "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/${var.preseed_file} ", "-- <enter>"]
   boot_wait    = "10s"
 
@@ -28,7 +30,7 @@ source "proxmox" "ubuntu" {
   #    storage_pool_type = "${var.datastore_type}"
   #    type              = "scsi"
   #  }
-  #  http_directory           = "./http"
+  http_directory = "./http"
   #  memory                   = "${var.memory}"
   #  network_adapters {
   #    bridge = "vmbr0"
