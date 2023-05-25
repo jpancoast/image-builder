@@ -10,3 +10,7 @@ apk add --no-cache tzdata
 echo "US/Mountain" >/etc/timezone
 cp /usr/share/zoneinfo/US/Mountain /etc/localtime
 apk del tzdata
+
+apk add openssh
+rc-update add sshd
+/etc/init.d/sshd start
