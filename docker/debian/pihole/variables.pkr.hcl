@@ -2,7 +2,7 @@ variable "distribution" {
   type = string
 }
 
-variable "docker_registry" {
+variable "base_image" {
   type = string
 }
 

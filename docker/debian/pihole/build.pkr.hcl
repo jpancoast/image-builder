@@ -1,10 +1,10 @@
-source "docker" "example" {
-  image  = "alpine"
+source "docker" "pihole" {
+  image  = "${var.base_image}"
   commit = true
 }
 
 build {
-  sources = ["source.docker.example"]
+  sources = ["source.docker.pihole"]
 
   #
   # Provision the base stuff (apk update, timezone, etc.)
@@ -28,12 +28,9 @@ build {
 
   post-processors {
     post-processor "docker-tag" {
-      repository = "${var.docker_registry}/${var.distribution}/${var.arch}/${var.application}"
+      repository = "${var.distribution}/${var.arch}/${var.application}"
       tags       = ["${var.version}", "latest"]
     }
-
-    post-processor "docker-push" {
-
-    }
+    #    post-processor "docker-push" {}
   }
 }
