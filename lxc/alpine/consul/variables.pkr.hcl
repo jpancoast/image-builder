@@ -18,6 +18,10 @@ variable "image_version" {
   type = string
 }
 
+variable "app_version" {
+  type = string
+}
+
 variable "image_directory" {
   type = string
 }

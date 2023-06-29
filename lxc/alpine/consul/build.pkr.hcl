@@ -22,7 +22,7 @@ source "lxc" "container" {
   config_file      = "/etc/lxc/default.conf"
   template_name    = "download"
   output_directory = "${local.output_directory}"
-  container_name   = "${var.application}-${var.distribution}-${var.os_version}-${var.arch}-${var.image_version}"
+  container_name   = "${var.application}-${var.app_version}-${var.distribution}-${var.os_version}-${var.arch}-${var.image_version}"
 
   template_parameters = [
     "-d", "${var.distribution}",
@@ -37,14 +37,14 @@ source "lxc" "container" {
 # https://www.packer.io/docs/templates/hcl_templates/blocks/build
 #
 build {
-  name    = "${var.application}-${var.distribution}-${var.os_version}-${var.arch}-${var.image_version}"
+  name    = "${var.application}-${var.app_version}-${var.distribution}-${var.os_version}-${var.arch}-${var.image_version}"
   sources = ["source.lxc.container"]
 
   #
   # Provision the base stuff (apk update, timezone, etc.)
   #
   provisioner "shell" {
-    script = "${path.root}/../../../provisioning_scripts/${var.distribution}/base/provision.sh"
+    script = "${path.root}/../../provisioning_scripts/${var.distribution}/base/provision.sh"
 
     env = {
       DNS_SEARCH_DOMAIN = var.dns_search_domain
@@ -58,6 +58,11 @@ build {
   #
   provisioner "shell" {
     script = "${path.root}/provision.sh"
+
+    environment_vars = [
+      "APP_VERSION=${var.app_version}",
+      "ARCH=${var.arch}"
+    ]
   }
 
   post-processors {
@@ -65,7 +70,7 @@ build {
     # Fix the rootfs issue, re-archive the thing with proper directory structure
     #
     post-processor "shell-local" {
-      script = "${path.root}/../../../provisioning_scripts/base/post-processor-rearchive.sh"
+      script = "${path.root}/../../provisioning_scripts/base/post-processor-rearchive.sh"
 
       env = {
         OUTPUT_DIRECTORY = local.output_directory
@@ -85,7 +90,7 @@ build {
     # Clean up the original 'rootfs.tar.gz' artifact that's no longer needed
     #
     post-processor "shell-local" {
-      script = "${path.root}/../../../provisioning_scripts/base/post-processor-clean.sh"
+      script = "${path.root}/../../provisioning_scripts/base/post-processor-clean.sh"
 
       env = {
         OUTPUT_DIRECTORY = local.output_directory
