@@ -65,6 +65,11 @@ build {
     ]
   }
 
+  provisioner "file" {
+    source      = "files/etc/haproxy/haproxy.cfg"
+    destination = "/etc/haproxy/haproxy.cfg"
+  }
+
   post-processors {
     #
     # Fix the rootfs issue, re-archive the thing with proper directory structure
