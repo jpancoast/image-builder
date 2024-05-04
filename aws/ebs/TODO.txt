@@ -1,0 +1,7 @@
+
+Update the README.md with changes (if necessary)
+    the TF for a test build VPC, keys, etc.
+
+Test sharing with other accounts.
+
+write cleanup (script that cleans up old AMI's), rollback, and promote script"

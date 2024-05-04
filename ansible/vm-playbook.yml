@@ -1,0 +1,10 @@
+#
+# Call one or multiple roles in here
+#
+---
+- name: Ansible VM Provisioner
+  become: yes
+  become_user: root
+  hosts: default
+  roles:
+    - apache

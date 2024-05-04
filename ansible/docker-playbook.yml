@@ -1,0 +1,8 @@
+#
+# Call one or multiple roles in here
+#
+---
+- name: Ansible Docker Provisioner
+  hosts: default
+  roles:
+    - apache
