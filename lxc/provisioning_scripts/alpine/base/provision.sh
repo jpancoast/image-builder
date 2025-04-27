@@ -4,6 +4,12 @@ echo "search $DNS_SEARCH_DOMAIN" >/etc/resolv.conf
 echo "nameserver $DNS_1" >>/etc/resolv.conf
 echo "nameserver $DNS_2" >>/etc/resolv.conf
 
+
+/etc/init.d/networking restart
+
+#ip a
+#ip r
+
 apk update
 apk upgrade
 apk add --no-cache tzdata
